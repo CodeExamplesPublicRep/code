@@ -15,7 +15,6 @@ public class outputTV : MonoBehaviour {
 	public bool useAbsoluteValue = true;
 	public float shiftValue = 0f;
 	public float valueMultiplier = 3f; 
-	public float magicVar = 56.2f;
 	public float frequency = 0.5f; 
 	float pi= 3.14159265359f;
 	public float noiseLevelMult = 1;
@@ -35,13 +34,6 @@ public class outputTV : MonoBehaviour {
 	public float amplitude = 2.0f;
 	 
 	 
-	public void setMagicToDefault(){
-		magicVar  = 56.2f;
-	}
-	
-	public void setMagic(float newVal){
-		magicVar  = newVal;
-	}
 	
 	void Start () {
 		output = this.gameObject.GetComponent<Text>();
@@ -112,11 +104,11 @@ public class outputTV : MonoBehaviour {
 				break;
 			case mode.positiveCoord:
 				initializeCoordinate();
-				result = (float)   Math.Abs( Math.Sin( Mathf.Deg2Rad*(coordinateValue + shiftValue)* pi * magicVar  )* valueMultiplier ) ;
+				result = (float)   Math.Abs( Math.Sin( Mathf.Deg2Rad*(coordinateValue + shiftValue)* pi )* valueMultiplier ) ;
 				break;
 			case mode.dependOnRotat:
 				initializeCoordinate();	
-				result = (float)   Math.Abs( Math.Sin( Mathf.Deg2Rad*(-coordinateValue )* pi * magicVar   ) ) ;
+				result = (float)   Math.Abs( Math.Sin( Mathf.Deg2Rad*(-coordinateValue )* pi  ) ) ;
 				break;
 			case mode.growWithTime:
 				currentTime = DateTime.Now;			

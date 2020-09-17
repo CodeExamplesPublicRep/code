@@ -1,0 +1,102 @@
+<div id="selectedPostofficePreview" *ngIf="officesData && officesData.length == 1 || selectedOffice ">
+    <button (click)="returnToOfficesList()" #backToListArrow *ngIf="officesData.length > 1"><img
+            src="../../../assets/singleOfficePreviewIcons//leftArrow.png" alt="back to list arrow"></button>
+    <h1>{{selectedOffice.POSTINDEX}}</h1>
+
+    <hr>
+
+    <p class="padding-top" id="addressParagraph"><img src="../../../assets/singleOfficePreviewIcons/pinBlue.png"
+            alt="address pin">{{selectedOffice.ADDRESS}}, {{selectedOffice.CITY_UA}}</p>
+    <p class="padding-top" id="phoneParagraph"><img src="../../../assets/singleOfficePreviewIcons/phone.png"
+            alt="office phone"><a class="phone" href="tel:0800300545">0 800 300 545</a></p>
+    <div class="padding-top" *ngIf="selectedOffice.schedule && selectedOffice.schedule.length ">
+        <img src="../../../assets/singleOfficePreviewIcons/clock.png" class="aligner" alt="working time">
+        <div class="aligner">
+            <ng-container *ngFor="let day of selectedOffice.schedule">
+                <div class="day" [ngClass]="{
+                    'grayDay': (! isCurrentDayByUserTime( day ) ), 
+                    '': isCurrentDayByUserTime( day )
+                }">
+                    <span> {{day.DAYOFWEEK_UA}} {{day.TFROM}} - {{day.TTO}} </span>
+                    <ul *ngIf="isCurrentDayByUserTime( day )" class="dayRelatedStatus">
+                        <li class="fixGreen" [ngClass]="{
+                            'red': (! isOpenedNowBySchadule(selectedOffice.schedule)), 
+                            'green': isOpenedNowBySchadule(selectedOffice.schedule)
+                        }">{{isOpenedNowBySchadule( selectedOffice.schedule )?"Відчинено" : ( isBreakTimeNowBySchadule( selectedOffice.schedule )? "Перерва" : "Зачинено" )}}
+                        </li>
+                    </ul>
+
+                    <p *ngIf="day.BREAKTFROM && day.BREAKTTO" [ngClass]="{
+                        'grayDay': (! isCurrentDayByUserTime( day ) ), 
+                        '': isCurrentDayByUserTime( day )
+                    }">перерва ({{day.BREAKTFROM}} - {{day.BREAKTTO}})</p>
+                </div>
+
+            </ng-container>
+        </div>
+    </div>
+    <div class="padding-top">
+        <img src="../../../assets/singleOfficePreviewIcons/letter.png" id="servicesImg" class="aligner"
+            alt="services list">
+        <span id="mainServices">Перелік основних послуг</span>
+        <div id="servicesList" class="aligner">
+            <ng-container *ngIf="selectedOffice">
+
+
+                <p *ngIf="string01ToBoolean(selectedOffice.IS_AUTOMATED)">Експрес</p>
+                <p>Стандарт</p>
+                <p *ngIf="string01ToBoolean(selectedOffice.IS_AUTOMATED) && string01ToBoolean(selectedOffice.IS_BOX)">
+                    Box</p>
+                <p *ngIf="string01ToBoolean(selectedOffice.IS_FLAGMAN)">Відправка у той же день (до 18:00)</p>
+                <p *ngIf="string01ToBoolean(selectedOffice.IS_DHL)">Експрес-доставка DHL</p>
+                <p *ngIf="false">Пріоритет для бізнесу</p>
+                <p *ngIf="string01ToBoolean(selectedOffice.POSTTERMINAL)">Оплата карткою</p>
+                <p *ngIf="string01ToBoolean(selectedOffice.IS_CASH)">Видача готівки з картки</p>
+                <p>Доставка за межі України</p>
+                <p *ngIf="string01ToBoolean(selectedOffice.IS_AUTOMATED)">Прийом відправлень, оформлених он-лайн</p>
+                <p>Комунальні та інші платежі</p>
+                <p>Виплата післяплати</p>
+                <p>Перекази</p>
+
+            </ng-container>
+
+        </div>
+
+    </div>
+
+    <div class="padding-top" *ngIf="selectedOffice.NOTES_UA || selectedOffice.LOCK_UA !='Активний запис' ">
+        <img src="../../../assets/singleOfficePreviewIcons/info.png" class="aligner" alt="services list">
+        <div class="aligner" id="specialDescription">
+            <p *ngIf="selectedOffice.NOTES_UA" id="notes">{{selectedOffice.NOTES_UA}}</p>
+            <p *ngIf="selectedOffice.LOCK_UA !='Активний запис' " id="lockStatus">{{selectedOffice.LOCK_UA}}</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="postofficesListPreview" *ngIf="officesData&&officesData.length > 1 && ! selectedOffice">
+    <div class="officePreviewItem" (click)="focusOnOffice(office)" *ngFor="let office of officesData">
+        <h1>{{office.POSTINDEX}}</h1>
+        <ul *ngIf="office.currentDay">
+            <li [ngClass]="{
+                'red': (! isOpenedNowBySchadule([office.currentDay])), 
+                'green': isOpenedNowBySchadule([office.currentDay])
+            }">{{isOpenedNowBySchadule([office.currentDay])?"Відчинено" : ( isBreakTimeNowBySchadule([office.currentDay])? "Перерва" : "Зачинено" )}}
+            </li>
+        </ul>
+
+        <p>{{office.ADDRESS}}, {{office.CITY_UA}}</p>
+
+        <p *ngIf="office.currentDay">{{office.currentDay.DAYOFWEEK_UA}} {{office.currentDay.TFROM}} -
+            {{office.currentDay.TTO}}
+            <ng-container *ngIf="office.currentDay.BREAKTFROM && office.currentDay.BREAKTTO">
+                ({{office.currentDay.BREAKTFROM}} - {{office.currentDay.BREAKTTO}})</ng-container>
+        </p>
+
+
+
+    </div>
+
+</div>

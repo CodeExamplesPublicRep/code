@@ -1,0 +1,9 @@
+<map-preview-container id="mapSidePreview" [@openClosePreview]="currentOffices&&isAnimationsEnabled?'open':'close'" [hidden]="! currentOffices"></map-preview-container>
+<div id="map" class="" [@scaleWidth]="currentOffices&&isAnimationsEnabled?'thin':'wide'" (@scaleWidth.done)="fixMapSize()" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletMapReady)="onMapReady($event)">
+    <div id="error" [hidden]="! isDisplayError">
+        {{currentMessage}}
+    </div>
+</div>
+
+<leaflet-fullscreen-control [map]="map" [options]="fullscreenOptions" > </leaflet-fullscreen-control>
+  
