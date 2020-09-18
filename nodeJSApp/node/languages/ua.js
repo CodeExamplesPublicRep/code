@@ -1,6 +1,6 @@
 module.exports = {
-    expiredToken: "your token has expired",
-    noAccessRights: "you have no access rights",
-    resourseDontExist: "requested resourse not exist"
+    expiredToken: "строк дії токена вичерпаний",
+    noAccessRights: "у вас немає прав доступу до ресурсу",
+    resourseDontExist: "ресурс не існує"
 
 }

@@ -2,12 +2,12 @@ const config = {
     dev: {
         address: '127.0.0.1',
         port: '3000',
-        mimes: ['.jpg', '.ico', '.png', '.html', 'txt']
+        mimes: ['.jpg', '.ico', '.png', '.html', '.txt', '.css', '.js']
     },
     prod: {
         address: '',
         port: '3000',
-        mimes: ['.jpg', '.ico', '.png', '.html', 'txt']
+        mimes: ['.jpg', '.ico', '.png', '.html', '.txt', '.css', '.js']
     },
     currentEnv: 'dev',
     getCurrentConfig: function () {

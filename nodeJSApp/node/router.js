@@ -1,15 +1,16 @@
-const config = require('./config')
+const config = require('./config');
+
+
 
 const routes = {
+    '': {},
     pages: {
-
+        main: {}
     },
-    lol: {
-        kek: {}
+    api: {
+        v1: {}
     },
-    downloads: {
-
-    },
+    downloads: {},
     makeCoffee: {}
 }
 
@@ -35,10 +36,35 @@ module.exports.isRouteExist = function (route) {
             if (!currentRoute.hasOwnProperty(currentSubRoute))
                 return false
         }
+
     }
+
+    if (this.isAllowedMimePresent(routeParts[0])) {
+        // for empty route. when file present favicon
+        return true
+    }
+
     return false
 }
 
+module.exports.cutFilename = function (route) {
+    const trimmedRoute = trimChar(route, '/');
+    const routeParts = this.subdivideRouteToArray(trimmedRoute)
+    const isLastFileName = this.isAllowedMimePresent(routeParts[routeParts.length - 1])
+
+    if (isLastFileName) {
+        return routeParts[routeParts.length - 1]
+    }
+
+    if (this.isAllowedMimePresent(routeParts[0])) {
+        // for empty route. when file present favicon
+        return this.isAllowedMimePresent(routeParts[0])
+    }
+
+    return null;
+}
+
+module.exports.trimChar = trimChar;
 function trimChar(string, charToRemove) {
     while (string.charAt(0) == charToRemove) {
         string = string.substring(1);
@@ -60,7 +86,7 @@ module.exports.subdivideRouteToArray = function (entireRoute) {
 }
 
 module.exports.isAllowedMimePresent = function (str) {
-    const allowedMimeTypes = config['dev'].mimes;
+    const allowedMimeTypes = config.getCurrentConfig().mimes;
 
     for (let i = 0; i < allowedMimeTypes.length; i++) {
         if (str.includes(allowedMimeTypes[i]))
